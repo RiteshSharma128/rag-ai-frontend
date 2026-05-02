@@ -55,18 +55,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     init();
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    try {
-      const { data } = await authAPI.login({ email, password });
-      setUser(data.user);
-      toast.success(`Welcome back, ${data.user.name}!`);
-      return true;
-    } catch (error: any) {
-      const message = error.response?.data?.message || 'Login failed';
-      toast.error(message);
-      return false;
-    }
-  };
+ const login = async (email: string, password: string): Promise<boolean> => {
+  try {
+    const { data } = await authAPI.login({ email, password });
+    setUser(data.user);
+    toast.success(`Welcome back, ${data.user.name}!`);
+    return true;
+  } catch (error: any) {
+    const message = error.response?.data?.message || 'Login failed';
+    toast.error(message);
+    return false;
+  }
+};
 
   const register = async (
     name: string, email: string, password: string, confirmPassword: string
