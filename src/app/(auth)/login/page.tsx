@@ -115,7 +115,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Eye, EyeOff, Brain, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, refreshUser } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') || '/dashboard';
@@ -125,20 +125,25 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.email || !form.password) return;
-    setError('');
-    setLoading(true);
-    try {
-      const ok = await login(form.email, form.password);
-      if (ok) router.push(redirect);
-    } catch (err: any) {
-      setError(err?.message || 'Login failed');
-    } finally {
-      setLoading(false);
+ const { login, refreshUser } = useAuth();
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!form.email || !form.password) return;
+  setError('');
+  setLoading(true);
+  try {
+    const ok = await login(form.email, form.password);
+  if (ok) {
+      await refreshUser(); // 🔥 IMPORTANT
+      router.replace(redirect); // 🔥 replace use karo
     }
-  };
+  } catch (err: any) {
+    setError(err?.message || 'Login failed');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-surface-950 flex items-center justify-center px-4">
