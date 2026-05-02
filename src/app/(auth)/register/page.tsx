@@ -162,7 +162,7 @@ const PasswordRule = ({ ok, text }: { ok: boolean; text: string }) => (
 );
 
 export default function RegisterPage() {
-  const { register } = useAuth();
+  const { register, refreshUser } = useAuth();
   const router = useRouter();
 
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
