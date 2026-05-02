@@ -183,7 +183,11 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const ok = await register(form.name, form.email, form.password, form.confirmPassword);
-      if (ok) router.push('/dashboard');
+      const redirect = '/dashboard';
+     if (ok) {
+  await refreshUser(); // 🔥 add this
+  router.replace(redirect);
+}
     } catch (err: any) {
       setError(err?.message || 'Registration failed');
     } finally {
